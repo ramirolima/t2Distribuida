@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 if (!process.env.PORT)
   throw Error("Variável de ambiente PORT não informada");
 const port = process.env.PORT;
@@ -9,7 +11,18 @@ init()
 
 function init() {
   new Promise(function (resolve, reject) {
-    console.log("inseriu na api")
+      const fs = require("fs")
+      const files = fs.readdirSync("./resources")
+      for (let i = 0; i < files.length; i++) {
+          const obj = {name:files[i]}
+          fetch('http://localhost:3001/resource/', {
+              method: 'POST',
+              body: JSON.stringify(obj),
+              headers: { 'Content-Type': 'application/json' }
+          })
+              // .then(res => res.json())
+              .then(res => console.log(res))
+      }
   }).then(
     process.stdin.on('data', data => {
       console.log("buscou recurso na api")

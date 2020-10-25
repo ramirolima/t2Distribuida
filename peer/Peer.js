@@ -36,37 +36,19 @@ module.exports = class Peer {
     onConnection(socket) { }
 
     onData(socket, data) {
-        // console.log("received: ", data.toString())
         this.sendData(findResource(data.toString()))
         socket.destroy()
 
 
     }
     sendData(data) {
-        // console.log(this.connections[0])
-        // this.connections[0].write(data)
         this.connections.forEach(socket => socket.write(data))
     }
-
-    
-
-    
-
-// fs.readFile('newfile.txt', 'utf-8', function(err, contents){
-//     if (err) throw err;
-//     console.log(contents);
-// })
-
-
 }
 
-function findResource(name) {
-    console.log(name.toString())
-    fs.readFile(`resources/resource1.txt`, 'utf-8', function (err, contents) {
-        if (err) console.log('File not found.')
 
-        console.log(contents)
-    })
+function findResource(name) {
+     return fs.readFileSync(`resources/${name}`, 'utf-8')
 }
 
 

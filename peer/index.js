@@ -14,13 +14,14 @@ function init() {
       const fs = require("fs")
       const files = fs.readdirSync("./resources")
       for (let i = 0; i < files.length; i++) {
+        console.log(location.hostname)
           const obj = {name:files[i]}
           fetch('http://localhost:3001/resource/', {
               method: 'POST',
               body: JSON.stringify(obj),
               headers: { 'Content-Type': 'application/json' }
           })
-              // .then(res => res.json())
+              .then(res => res.json())
               .then(res => console.log(res))
       }
   }).then(

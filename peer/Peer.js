@@ -38,8 +38,6 @@ module.exports = class Peer {
     onData(socket, data) {
         this.sendData(findResource(data.toString()))
         socket.destroy()
-
-
     }
     sendData(data) {
         this.connections.forEach(socket => socket.write(data))

@@ -47,6 +47,10 @@ module.exports = function () {
         res.send(req.body);
     });
 
+    app.get('/imalive',function (req,res){
+        console.log('a fazer')
+    })
+
     app.post('/signout', function (req, res) {
         if (isSigned(userRequest)) {
             const result = users.filter(user => user.id !== userRequest);

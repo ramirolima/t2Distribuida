@@ -9,60 +9,60 @@ const peer = new Peer(port);
 
 init()
 
-
-
 function init() {
   new Promise(function (resolve, reject) {
-      const fs = require("fs")
-      const files = fs.readdirSync("./resources")
-      let random = Math.ceil(Math.random()*(2));
-      let cont = 0;
-      for (let i = 0; i < files.length; i++) {
+    const fs = require("fs")
+    const files = fs.readdirSync("./resources")
 
-          console.log(random);
-          let content = fs.readFileSync(`resources/${files[i]}`, 'utf-8')
-          const obj = {name:files[i],
-                       hash:sha(content, "secretKey"),
-                       host:process.env.HOST}
-          fetch('http://localhost:3001/resource/', {
-              method: 'POST',
-              body: JSON.stringify(obj),
-              headers: { 'Content-Type': 'application/json' }
-          })
-              .then(res => res.json())
-              .then(res => {
-                  if(res === true){
-                  cont++;
-          }}
-          )
-          if (cont === random){
-              console.log('passou aqui 2')
-              break;
-          }
+    for (let i = 0; i < files.length; i++) {
+
+      let content = fs.readFileSync(`resources/${files[i]}`, 'utf-8')
+
+      const obj = {
+        name: files[i],
+        hash: sha(content, "secretKey"),
+        host: process.env.HOST
       }
+
+      fetch('http://localhost:3001/resource/', {
+        method: 'POST',
+        body: JSON.stringify(obj),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => res.json())
+    }
   }).then(
+    fetch(`http://localhost:3001/resourceAll?host=${process.env.HOST}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => res.json())
+      .then(res => {
+        console.log("\nRecurso disponíveis: \n")
+        console.log("------------------------")
+        console.log(res.map((resource) => `${resource.name} : ${resource.host}`).join([separador = '\n']))
+        console.log("------------------------")
+        console.log("\nDigite o nome do recurso desejado: \n")
+      })
+  )
+  .then(
     process.stdin.on('data', data => {
-      console.log("buscou recurso na api")
-      var hostObj = {
-        host: host,
-        name: "resource1.txt",
-        hash: "hasuisdui"
-      }
+      fetch(`http://localhost:3001/resource/?name=${data.toString()}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => res.json())
+        .then(res => {
+          peer.connectTo(res[0].host);
 
-      peer.connectTo(hostObj.host);
+          peer.onConnection = socket => {
+            socket.write(res[0].name)
+          };
 
-      peer.onConnection = socket => {
-        socket.write(hostObj.name)
-      };
+          peer.onData = (socket, data) => {
+            console.log('\nConteúdo: \n')
+            console.log(`${data.toString()}`)
+            console.log("\nDigite o nome de outro recurso desejado: \n")
+          };
 
-      peer.onData = (socket, data) => {
-        
-        console.log(data.toString())
-    };
-
-
-      
-      // peer.sendData(JSON.stringify(hostObj.name.toString().replace(/\n/g, "")))
+        })
     })
   )
 }

@@ -31,8 +31,17 @@ module.exports = function () {
 
     app.post('/resource', function (req, res) {
         if (isSigned(userRequest)) {
-            resources.push(req.body);
-            res.send(req.body);
+            if(validateResource(req.body.name)){
+                resources.push(req.body);
+                res.send({
+                    boolean: true
+                });
+            }
+            else{
+                res.send({
+                    boolean: false
+                });
+            }
         }
         else
             res.send("Unauthorized");
@@ -66,4 +75,8 @@ module.exports = function () {
 
 function isSigned(id) {
     return (users.filter(user => user.id === id).length > 0)
+}
+
+function validateResource(name){
+    return(resources.filter(resource => resource.name === name).length = 0)
 }

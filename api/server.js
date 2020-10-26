@@ -33,15 +33,10 @@ module.exports = function () {
         if (isSigned(userRequest)) {
             if(validateResource(req.body.name)){
                 resources.push(req.body);
-                res.send({
-                    boolean: true
-                });
+                res.send(true);
             }
-            else{
-                res.send({
-                    boolean: false
-                });
-            }
+            else
+                res.send(false);
         }
         else
             res.send("Unauthorized");
@@ -78,5 +73,5 @@ function isSigned(id) {
 }
 
 function validateResource(name){
-    return(resources.filter(resource => resource.name === name).length = 0)
+    return (resources.filter(resource => resource.name === name).length === 0)
 }

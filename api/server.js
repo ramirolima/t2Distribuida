@@ -9,14 +9,6 @@ module.exports = function () {
     app.set('port', PORT);
     app.use(bodyParser.json());
 
-    app.get('/resource', function (req, res) {
-        res.send(resources.filter(resource => resource.name === req.query.name));
-    });
-
-    app.get('/resourceAll', function (req, res) {
-        return res.send(resources.filter(resource => resource.host !== req.query.host))
-    });
-
     app.post('/resource', function (req, res) {
         if (validateResource(req.body.name)) {
             if (validateQuantity(req.body.host)) {
@@ -28,7 +20,15 @@ module.exports = function () {
             res.send(false);
     });
 
-    app.get('/imalive', function (req, res) {
+    app.get('/resource', function (req, res) {
+        res.send(resources.filter(resource => resource.name === req.query.name));
+    });
+
+    app.get('/resourceAll', function (req, res) {
+        return res.send(resources.filter(resource => resource.host !== req.query.host))
+    });
+
+    app.get('/live', function (req, res) {
         console.log('a fazer')
     })
 

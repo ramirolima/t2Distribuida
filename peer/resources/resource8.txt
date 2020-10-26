@@ -1,1 +1,1 @@
-resource 8
+Conteúdo do resource 8

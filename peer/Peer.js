@@ -1,10 +1,9 @@
-let fs = require ('fs');
+let fs = require('fs');
 
 const net = require("net");
 module.exports = class Peer {
     constructor(port) {
         this.port = port;
-        this.connections = [];
         const server = net.createServer((socket) => {
             this.onSocketConnected(socket)
         });
@@ -20,33 +19,24 @@ module.exports = class Peer {
         );
     }
     onSocketConnected(socket) {
-        this.connections.push(socket);
-
-        socket.on('data', (data) =>
+        socket.on('data', (data) => {
+            console.log("recebi:", data.toString())
             this.onData(socket, data)
-        );
+        })
+        
         this.onConnection(socket);
-
-        socket.on('close', () => {
-            this.connections = this.connections.filter(conn => {
-                return conn !== socket;
-            })
-        });
     }
     onConnection(socket) { }
 
     onData(socket, data) {
-        this.sendData(findResource(data.toString()))
+        console.log("Solicitação respondida!")
+        socket.write(findResource(data.toString()))
         socket.destroy()
-    }
-    sendData(data) {
-        this.connections.forEach(socket => socket.write(data))
     }
 }
 
-
 function findResource(name) {
-     return fs.readFileSync(`resources/${name}`, 'utf-8')
+    return fs.readFileSync(`resources/${name}`, 'utf-8')
 }
 
 

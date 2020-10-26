@@ -1,1 +1,1 @@
-resource 15
+Conteúdo do resource 15

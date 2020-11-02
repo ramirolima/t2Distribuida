@@ -1,7 +1,9 @@
 const fetch = require("node-fetch");
 
 if (!process.env.HOST) throw Error("Variável de ambiente HOST não informada");
+if (!process.env.APIHOST) throw Error("Endereço de IP da API não informado")
 const [host, port] = process.env.HOST.split(":");
+const apiAddress = process.env.APIHOST
 const sha = require("sha256");
 const Peer = require("./Peer");
 const peer = new Peer(port);
@@ -21,7 +23,7 @@ function postResources() {
         host: process.env.HOST,
       };
 
-      fetch("http://localhost:3001/postResource/", {
+      fetch( `http://${apiAddress}/postResource/`, {
         method: "POST",
         body: JSON.stringify(obj),
         headers: { "Content-Type": "application/json" },
@@ -33,7 +35,7 @@ function postResources() {
     }
   })
     .then(
-      fetch(`http://localhost:3001/resourceAll?host=${process.env.HOST}`, {
+      fetch(`http://${apiAddress}/resourceAll?host=${process.env.HOST}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })
@@ -55,7 +57,7 @@ function postResources() {
 function keepAlive(){
     setInterval(function(){
       fetch(
-          `http://localhost:3001/live?host=${process.env.HOST}`, {
+          `http://${apiAddress}/live?host=${process.env.HOST}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
           }
@@ -68,7 +70,7 @@ async function init() {
     const waitPostResources = await postResources();
     keepAlive()
     process.stdin.on("data", (data) => {
-      fetch(`http://localhost:3001/resource/?name=${data.toString()}`, {
+      fetch(`http://${apiAddress}/resource/?name=${data.toString()}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })

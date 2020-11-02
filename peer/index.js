@@ -52,9 +52,21 @@ function postResources() {
     .catch((error) => {});
 }
 
+function keepAlive(){
+    setInterval(function(){
+      fetch(
+          `http://localhost:3001/live?host=${process.env.HOST}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        )
+    },5000)
+}
+
 async function init() {
   try {
     const waitPostResources = await postResources();
+    keepAlive()
     process.stdin.on("data", (data) => {
       fetch(`http://localhost:3001/resource/?name=${data.toString()}`, {
         method: "GET",

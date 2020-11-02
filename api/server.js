@@ -9,7 +9,7 @@ module.exports = function () {
     app.set('port', PORT);
     app.use(bodyParser.json());
 
-    app.post('/resource', function (req, res) {
+    app.post('/postResource', function (req, res) {
         if (validateResource(req.body.name)) {
             if (validateQuantity(req.body.host)) {
                 resources.push(req.body);

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "HOST=localhost:4001 nodemon ./index.js",
-    "start": "HOST=localhost:4001 node ./index.js"
+    "start": "HOST=localhost:4001 node ./index.js",
+    "peer": "HOST=localhost:4002 node ./index.js"
   },
   "author": "",
   "license": "ISC",

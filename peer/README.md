@@ -1,2 +1,6 @@
-Para execução do peer, deverá entrar na pasta /peer do projeto e rodar o comando npm install, ao instalar todas dependencias do projeto basta executar o comando:
-HOST=10.0.2.15:3001 APIHOST= 10.0.2.15:3002 node ./index.js, vale lembrar que o host e api host deverá ser informado conforme ip da máquina em que está, este comando só esta como exemplo.
+Para executar o *peer*, faça os seguintes passos:
+* Entre na pasta `peer` do projeto.
+* Digite o comando `npm install` para instalar as dependẽncias do projeto.
+* Digite o comando `HOST=<endereçoIp>:<porta> APIHOST=<endereçoIp>:<porta> node ./index.js`. Em HOST o endereço é da sua máquina, enquanto em APIHOST o endereço é da máquina que está executando a API.
+
+

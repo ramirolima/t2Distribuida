@@ -1,1 +1,7 @@
-Para executar nossa api em node, entre dentro da mesma cd api, após estar dentro da pasta basta executar o comando npm install para as dependencias e logo depois rodar o comando "npm run dev".
+ Para executar a api do projeto, faça os seguintes passos:
+```
+$ Instale as dependências do projeto, digitando o comando npm install
+```
+```
+$ Para executar a API, digite o comando npm run dev
+```
